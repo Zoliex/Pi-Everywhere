@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="js/vue.global.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/tailwind.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      svg {
+        width: 112px;
+        height: 112px;
+      }
+    </style>
+  </head>
+  <body class="bg-zinc-900 overflow-hidden cursor-crosshair">
+    <div id="app" class="absolute top-0 left-0 right-0 bottom-0">
+      <div
+        class="w-screen h-screen flex items-center justify-evenly flex-wrap px-16"
+      >
+        <a v-for="app in apps" :href="app.endpoint"
+          ><div
+            class="h-48 w-48 bg-gradient-to-tr mx-4 rounded-2xl flex items-center justify-center"
+            :class="[app.icon.colors.primary, app.icon.colors.secondary]"
+            v-html="app.icon.svg"
+          ></div
+        ></a>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

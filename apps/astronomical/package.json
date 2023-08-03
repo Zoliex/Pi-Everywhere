@@ -1,0 +1,13 @@
+{
+  "name": "astronomical",
+  "version": "1.0.0",
+  "description": "Astronomical is an included app for Pi Everywhere that provides astronomical data using the GPS module.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Zoliex",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "suncalc": "^1.9.0"
+  }
+}

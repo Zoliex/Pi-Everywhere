@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astronomical</title>
+    <script src="js/vue.global.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/tailwind.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/datepicker.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gabriela&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body
+    class="bg-zinc-900 select-none text-white overflow-hidden cursor-crosshair box-border"
+  >
+    <div id="app" class="absolute top-0 left-0 right-0 bottom-0 flex flex-row">
+      <div class="h-5/6 w-1/2 pl-6 pt-6 flex justify-center flex-row flex-wrap">
+        <div
+          class="bg-gradient-to-tr from-orange-600 to-amber-500 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        >
+          <p class="text-center">
+            <strong>Heure d'or</strong><br />
+            {{astro.sun.goldenHour.morning}} <br />
+            {{astro.sun.goldenHour.evening}}
+          </p>
+        </div>
+        <div
+          class="bg-gradient-to-tr from-indigo-900 to-cyan-700 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        >
+          <p class="text-center">
+            <strong>Heure Bleue</strong><br />
+            {{astro.sun.civilTwilight.morning}} <br />
+            {{astro.sun.civilTwilight.evening}}
+          </p>
+        </div>
+        <div
+          class="bg-gradient-to-tr from-yellow-900 to-yellow-600 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        >
+          <p class="text-center">
+            <strong>Soleil</strong><br />
+            <strong>Lever</strong> {{astro.sun.sunRise}}<br />
+            <strong>Coucher</strong> {{astro.sun.sunSet}}
+          </p>
+        </div>
+        <div
+          class="bg-gradient-to-tr from-gray-800 to-slate-600 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        >
+          <p class="text-center">
+            <strong>Lune</strong><br />
+            <strong>Lever</strong> {{astro.moon.pos.rise}}<br />
+            <strong>Coucher</strong> {{astro.moon.pos.set}}
+          </p>
+        </div>
+        <div
+          class="bg-gradient-to-tr from-black to-slate-800 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        >
+          <p class="text-center">
+            <strong>Nuit noire</strong><br />
+            <strong>Début</strong> {{astro.sun.night.begin}}<br />
+            <strong>Fin</strong> {{astro.sun.night.end}}
+          </p>
+        </div>
+        <div
+          class="bg-gradient-to-tr from-red-950 to-red-800 w-1/2 flex items-center justify-center p-3 bg-clip-content rounded-3xl"
+        @click="showDatePicker = true"
+          >
+          <p class="text-center">
+            <strong>Changer date</strong><br />
+            {{astro.date}}
+          </p>
+        </div>
+      </div>
+      <div class="h-5/6 w-1/2 flex justify-center flex-row flex-wrap">
+        <div class="w-full h-fit pt-9">
+          <h3 class="text-center text-xl">
+            Phase de la lune ({{astro.moon.phase.illumination}}%)
+          </h3>
+          <h1 class="phase text-center text-5xl leading-[60px]" v-html="astro.moon.phase.name">
+          </h1>
+        </div>
+        <div class="w-full h-1/2 bg-opacity-60 flex justify-center">
+          <img
+            :src="astro.moon.phase.imgSrc"
+            class="object-fill h-full moon rounded-full pointer-events-none"
+          />
+        </div>
+      </div>
+      <div class="absolute left-0 right-0 bottom-0 h-10 text-lg">
+        <span class="flex items-center justify-center"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            class="pt-1"
+          >
+            <g filter="url(#filter0_d_214_52)">
+              <path
+                d="M14 0C14.6914 0 15.25 0.558594 15.25 1.25V2.60547C18.3906 3.12891 20.8711 5.60938 21.3945 8.75H22.75C23.4414 8.75 24 9.30859 24 10C24 10.6914 23.4414 11.25 22.75 11.25H21.3945C20.8711 14.3906 18.3906 16.8711 15.25 17.3945V18.75C15.25 19.4414 14.6914 20 14 20C13.3086 20 12.75 19.4414 12.75 18.75V17.3945C9.60937 16.8711 7.12891 14.3906 6.60547 11.25H5.25C4.55859 11.25 4 10.6914 4 10C4 9.30859 4.55859 8.75 5.25 8.75H6.60547C7.12891 5.60938 9.60937 3.12891 12.75 2.60547V1.25C12.75 0.558594 13.3086 0 14 0ZM9 10C9 11.3261 9.52678 12.5979 10.4645 13.5355C11.4021 14.4732 12.6739 15 14 15C15.3261 15 16.5979 14.4732 17.5355 13.5355C18.4732 12.5979 19 11.3261 19 10C19 8.67392 18.4732 7.40215 17.5355 6.46447C16.5979 5.52678 15.3261 5 14 5C12.6739 5 11.4021 5.52678 10.4645 6.46447C9.52678 7.40215 9 8.67392 9 10ZM14 6.875C14.8288 6.875 15.6237 7.20424 16.2097 7.79029C16.7958 8.37634 17.125 9.1712 17.125 10C17.125 10.8288 16.7958 11.6237 16.2097 12.2097C15.6237 12.7958 14.8288 13.125 14 13.125C13.1712 13.125 12.3763 12.7958 11.7903 12.2097C11.2042 11.6237 10.875 10.8288 10.875 10C10.875 9.1712 11.2042 8.37634 11.7903 7.79029C12.3763 7.20424 13.1712 6.875 14 6.875Z"
+                fill="white"
+              />
+            </g>
+            <defs>
+              <filter
+                id="filter0_d_214_52"
+                x="0"
+                y="0"
+                width="28"
+                height="28"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="4" />
+                <feGaussianBlur stdDeviation="2" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_214_52"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_214_52"
+                  result="shape"
+                />
+              </filter>
+            </defs>
+          </svg>
+          Lat: {{location.latitude}} / Lon: {{location.longitude}} / Alt :
+          {{location.altitude}} m
+        </span>
+      </div>
+      <div :class="showDatePicker ? 'block' : 'hidden'" class="absolute top-0 bottom-0 right-0 left-0 z-50 bg-black bg-opacity-60 flex items-center justify-center">
+        <div inline-datepicker class="scale-125 bg-zinc-900 datepicker"></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
